@@ -70,7 +70,7 @@ class UsersController extends AbstractFOSRestController
         if ($form->isValid()) {
             $user = $form->getData();
 
-            $user_id = $data['user_id'];
+            $user_id = $user->getUserId();
             $isExist = $userRepository->find($user_id);
             if ($isExist) {
                 return $this->handleException(
