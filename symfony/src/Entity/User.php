@@ -148,7 +148,7 @@ class User
 
     public function setBalance(float $balance): self
     {
-        $this->balance = $balance;
+        $this->balance = $balance + $this->balance;
 
         return $this;
     }
