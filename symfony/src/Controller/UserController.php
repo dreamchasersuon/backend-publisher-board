@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserController extends AbstractFOSRestController
 {
@@ -38,8 +43,7 @@ class UserController extends AbstractFOSRestController
             $limit = $request->query->get('limit');
 
             $users = $userRepository->getUsersByOffsetAndLimit($offset, $limit);
-            $view = $this->view($users, Response::HTTP_OK);
-            return $this->handleView($view);
+            return new Response($this->serializeToSnakeCaseJson(['data' => $users]), 200);
         } else {
             $errors = $this->getErrorMessages($form);
             return $this->handleException(
@@ -66,15 +70,15 @@ class UserController extends AbstractFOSRestController
         UserRepository $userRepository
     ): Response
     {
-        $user = new User;
+        $user = new User();
         $form = $this->createForm(UserCreateType::class, $user);
         $userPersonalInfo = json_decode($request->getContent(),true);
 
         $form->submit($userPersonalInfo);
         if ($form->isValid()) {
-            $user = $form->getData();
+            $validatedUser = $form->getData();
 
-            $user_id = $user->getUserId();
+            $user_id = $validatedUser->getUserId();
             $isExist = $userRepository->find($user_id);
             if ($isExist) {
                 return $this->handleException(
@@ -223,7 +227,7 @@ class UserController extends AbstractFOSRestController
      * @param array $errors
      * @return Response
      */
-    private function handleException(int $http_status_code, string $message, array $errors)
+    private function handleException(int $http_status_code, string $message, array $errors): Response
     {
         return new Response(
             json_encode(
@@ -231,9 +235,38 @@ class UserController extends AbstractFOSRestController
                     'http_status_code' => $http_status_code,
                     'message' => $message,
                     'errors' => $errors
-                )
+                ),
+                JSON_PRETTY_PRINT
             ),
             $http_status_code
+        );
+    }
+
+    /**
+     *
+     * Serialize output data,
+     * replace camelCase to snake_case,
+     * add pretty-print
+     *
+     * @param $entity
+     * @return string
+     */
+    private function serializeToSnakeCaseJson($entity): string
+    {
+        $encoders = [new JsonEncoder()];
+        $normalizers = [
+            new JsonSerializableNormalizer(),
+            new ObjectNormalizer(
+                null,
+                new CamelCaseToSnakeCaseNameConverter()
+            )
+        ];
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return $serializer->serialize(
+            $entity,
+            'json',
+            ['json_encode_options' => JSON_PRETTY_PRINT]
         );
     }
 }
