@@ -160,9 +160,9 @@ class UserController extends AbstractFOSRestController
         }
 
         $form = $this->createForm(UserUpdateBalanceType::class, $user);
-        $data = json_decode($request->getContent(),true);
+        $transaction = json_decode($request->getContent(),true);
 
-        $form->submit($data);
+        $form->submit($transaction);
         if ($form->isValid()) {
             $entityManager->flush();
             return $this->handleView($this->view(null,Response::HTTP_NO_CONTENT));
@@ -193,9 +193,9 @@ class UserController extends AbstractFOSRestController
             }
         }
 
-        foreach ($form->all() as $child) {
-            if (!$child->isValid()) {
-                $errors[$child->getName()] = $this->getErrorMessages($child);
+        foreach ($form->all() as $field) {
+            if (!$field->isValid()) {
+                $errors[$field->getName()] = $this->getErrorMessages($field);
             }
         }
 
