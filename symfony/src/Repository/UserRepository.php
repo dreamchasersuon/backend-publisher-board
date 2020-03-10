@@ -24,7 +24,7 @@ class UserRepository extends ServiceEntityRepository
      * @param int $limit
      * @return mixed
      */
-    public function getAllUsers(int $offset, int $limit)
+    public function getUsersByOffsetAndLimit(int $offset, int $limit)
     {
         return $this->createQueryBuilder('u')
             ->setMaxResults($limit)

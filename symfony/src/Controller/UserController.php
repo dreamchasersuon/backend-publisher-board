@@ -34,7 +34,7 @@ class UserController extends AbstractFOSRestController
             $offset = $request->query->get('offset');
             $limit = $request->query->get('limit');
 
-            $users = $userRepository->getAllUsers($offset, $limit);
+            $users = $userRepository->getUsersByOffsetAndLimit($offset, $limit);
             $view = $this->view($users, 200);
             return $this->handleView($view);
         } else {
