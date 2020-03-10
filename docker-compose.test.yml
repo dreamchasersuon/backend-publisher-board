@@ -8,9 +8,9 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: symfony_test
-      MYSQL_USER: symfony_test
-      MYSQL_PASSWORD: symfony_test
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
     networks:
       - db
   php:
