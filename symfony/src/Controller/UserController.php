@@ -40,7 +40,7 @@ class UserController extends AbstractFOSRestController
         } else {
             $errors = $this->getErrorMessages($form);
             return $this->handleException(
-                422,
+                Response::HTTP_UNPROCESSABLE_ENTITY,
                 'An error has occurred while processing your request, make sure your data is valid',
                 $errors
             );
@@ -73,7 +73,7 @@ class UserController extends AbstractFOSRestController
             $isExist = $userRepository->find($user_id);
             if ($isExist) {
                 return $this->handleException(
-                    409,
+                    Response::HTTP_CONFLICT,
                     'Attempt to create user with existed ID: ' . $user_id,
                     []
                 );
@@ -85,7 +85,7 @@ class UserController extends AbstractFOSRestController
         } else {
             $errors = $this->getErrorMessages($form);
             return $this->handleException(
-                422,
+                Response::HTTP_UNPROCESSABLE_ENTITY,
                 'An error has occurred while processing your request, make sure your data is valid',
                 $errors
             );
@@ -111,7 +111,7 @@ class UserController extends AbstractFOSRestController
         $user = $userRepository->find($user_id);
         if (!$user) {
             return $this->handleException(
-                404,
+                Response::HTTP_NOT_FOUND,
                 'User with ID: ' . $user_id . ' is not found',
                 []
             );
@@ -127,7 +127,7 @@ class UserController extends AbstractFOSRestController
         } else {
             $errors = $this->getErrorMessages($form);
             return $this->handleException(
-                422,
+                Response::HTTP_UNPROCESSABLE_ENTITY,
                 'An error has occurred while processing your request, make sure your data is valid',
                 $errors
             );
@@ -153,7 +153,7 @@ class UserController extends AbstractFOSRestController
         $user = $userRepository->find($user_id);
         if (!$user) {
             return $this->handleException(
-                404,
+                Response::HTTP_NOT_FOUND,
                 'User with ID: ' . $user_id . ' is not found',
                 []
             );
@@ -169,13 +169,19 @@ class UserController extends AbstractFOSRestController
         } else {
             $errors = $this->getErrorMessages($form);
             return $this->handleException(
-                422,
+                Response::HTTP_UNPROCESSABLE_ENTITY,
                 'An error has occurred while processing your request, make sure your data is valid',
                 $errors
             );
         }
     }
 
+    /**
+     * Get all errors from
+     * the form
+     * @param FormInterface $form
+     * @return array
+     */
     private function getErrorMessages(FormInterface $form) {
         $errors = array();
 
@@ -196,6 +202,14 @@ class UserController extends AbstractFOSRestController
         return $errors;
     }
 
+    /**
+     * Create JSON response with
+     * status code, message and errors
+     * @param int $http_status_code
+     * @param string $message
+     * @param array $errors
+     * @return Response
+     */
     private function handleException(int $http_status_code, string $message, array $errors)
     {
         return new Response(
