@@ -19,7 +19,10 @@ class UserController extends AbstractFOSRestController
 {
 
     /**
-     * Get users
+     *
+     * Get users by offset
+     * and limit
+     *
      * @Rest\Get("/users")
      * @param UserRepository $userRepository
      * @param Request $request
@@ -35,7 +38,7 @@ class UserController extends AbstractFOSRestController
             $limit = $request->query->get('limit');
 
             $users = $userRepository->getUsersByOffsetAndLimit($offset, $limit);
-            $view = $this->view($users, 200);
+            $view = $this->view($users, Response::HTTP_OK);
             return $this->handleView($view);
         } else {
             $errors = $this->getErrorMessages($form);
@@ -48,7 +51,9 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * Create user
+     *
+     * Create new user
+     *
      * @Rest\Post("/users")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -93,7 +98,9 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * Update user
+     *
+     * Update user's personal info
+     *
      * @Rest\Put("/users/{user_id}")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -135,7 +142,9 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
+     *
      * Update user balance
+     *
      * @Rest\Post("/users/{user_id}/recharge")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -177,8 +186,10 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * Get all errors from
-     * the form
+     *
+     * Get validation errors
+     * from submitted form
+     *
      * @param FormInterface $form
      * @return array
      */
@@ -203,8 +214,10 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * Create JSON response with
+     *
+     * Create server response with
      * status code, message and errors
+     *
      * @param int $http_status_code
      * @param string $message
      * @param array $errors
