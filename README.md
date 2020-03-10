@@ -14,7 +14,7 @@ Install dependencies:
 
 In the project directory, you can run:
 
-### `docker-compose up -d`
+### `docker-compose up -d --build`
 start docker in backgorund mode
 ### `docker-compose run php bin/console doctrine:migrations:migrate`
 apply migrations to database
