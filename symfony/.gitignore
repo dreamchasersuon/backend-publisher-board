@@ -7,8 +7,6 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-/composer.lock
-/symfony.lock
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache
