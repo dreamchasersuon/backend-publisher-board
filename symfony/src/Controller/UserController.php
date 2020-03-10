@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 
-class UsersController extends AbstractFOSRestController
+class UserController extends AbstractFOSRestController
 {
 
     /**
@@ -25,12 +25,11 @@ class UsersController extends AbstractFOSRestController
      * @param Request $request
      * @return Response
      */
-    public function getUsersAction(Request $request, UserRepository $userRepository): Response
+    public function getUsers(Request $request, UserRepository $userRepository): Response
     {
         $form = $this->createForm(UserGetType::class);
-        $data = json_decode(json_encode($request->query->all()), true);
 
-        $form->submit($data);
+        $form->submit($request->query->all());
         if ($form->isValid()) {
             $offset = $request->query->get('offset');
             $limit = $request->query->get('limit');
@@ -56,7 +55,7 @@ class UsersController extends AbstractFOSRestController
      * @param UserRepository $userRepository
      * @return Response
      */
-    public function postUserAction(
+    public function createUser(
         Request $request,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository
@@ -64,9 +63,9 @@ class UsersController extends AbstractFOSRestController
     {
         $user = new User;
         $form = $this->createForm(UserCreateType::class, $user);
-        $data = json_decode($request->getContent(),true);
+        $userPersonalInfo = json_decode($request->getContent(),true);
 
-        $form->submit($data);
+        $form->submit($userPersonalInfo);
         if ($form->isValid()) {
             $user = $form->getData();
 
@@ -102,7 +101,7 @@ class UsersController extends AbstractFOSRestController
      * @param $user_id
      * @return Response
      */
-    public function putUserAction(
+    public function updateUser(
         Request $request,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
@@ -119,9 +118,9 @@ class UsersController extends AbstractFOSRestController
         }
 
         $form = $this->createForm(UserUpdateType::class, $user);
-        $data = json_decode($request->getContent(),true);
+        $userPersonalInfo = json_decode($request->getContent(),true);
 
-        $form->submit($data);
+        $form->submit($userPersonalInfo);
         if ($form->isValid()) {
             $entityManager->flush();
             return $this->handleView($this->view(null,Response::HTTP_NO_CONTENT));
@@ -144,7 +143,7 @@ class UsersController extends AbstractFOSRestController
      * @param string $user_id
      * @return Response
      */
-    public function postUserBalanceAction(
+    public function updateUserBalance(
         Request $request,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
