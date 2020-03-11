@@ -38,5 +38,9 @@ apply database migrations
 apply database fixtures
 ### `make prune`
 clean all inactive containers and cache
+### `make test`
+start functional tests
+### `docker-compose down`
+shut down containers
 
 

@@ -6,12 +6,10 @@ help:
 	@echo '  migrate    			apply database migrations'
 	@echo '  fixtures    			apply database fixtures'
 	@echo '  prune    				cleanup inactive containers and cache.'
+	@echo '  test    				start functional tests.'
 
 start_dev:
 	docker-compose up
-
-start_test:
-	docker-compose up -f docker-compose.test.yml
 
 build:
 	docker-compose build
@@ -27,3 +25,6 @@ fixtures:
 
 prune:
 	docker system prune -af
+
+test:
+	docker-compose exec php ./bin/phpunit
