@@ -16,7 +16,7 @@ Go to the project directory `cd backend-publisher-board`.
 1. `make start_dev`;
 2. `make install_deps`;
 3. `make migrate`;
-4. `make fixtures`.
+4. `make fixtures` if need fake data.
 
 ## Available Scripts
 
