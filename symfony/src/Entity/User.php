@@ -69,11 +69,7 @@ class User
 
     public function setUserName(?string $user_name): self
     {
-        if (empty($user_name)) {
-            return $this;
-        } else {
-            $this->user_name = $user_name;
-        }
+        $this->user_name = $user_name;
 
         return $this;
     }
@@ -85,11 +81,7 @@ class User
 
     public function setUserCustom(?string $user_custom): self
     {
-        if (empty($user_custom)) {
-            return $this;
-        } else {
-            $this->user_custom = $user_custom;
-        }
+        $this->user_custom = $user_custom;
 
         return $this;
     }
@@ -101,11 +93,7 @@ class User
 
     public function setEmail(?string $email): self
     {
-        if (empty($email)) {
-            return $this;
-        } else {
-            $this->email = $email;
-        }
+        $this->email = $email;
 
         return $this;
     }

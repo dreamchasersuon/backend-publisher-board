@@ -131,7 +131,7 @@ class UserController extends AbstractFOSRestController
         $form = $this->createForm(UserUpdateType::class, $user);
         $userPersonalInfo = json_decode($request->getContent(),true);
 
-        $form->submit($userPersonalInfo);
+        $form->submit($userPersonalInfo, false);
         if ($form->isValid()) {
             $entityManager->flush();
             return $this->handleView($this->view(null,Response::HTTP_NO_CONTENT));
