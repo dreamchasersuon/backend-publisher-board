@@ -13,10 +13,12 @@ Add alias to /etc/hosts:
 Clone this project `git clone https://github.com/dreamchasersuon/backend-publisher-board.git`.
 Go to the project directory `cd backend-publisher-board`.
 
-1. `make start_dev`;
+1. `make start`;
 2. `make install_deps`;
 3. `make migrate`;
 4. `make fixtures` if need fake data.
+
+Run `make down` to close all containers.
 
 ## Available Scripts
 
@@ -24,10 +26,8 @@ In the project directory, you can run:
 
 ### `make help`
 show available `make` commands
-### `make start_dev`
+### `make start`
 start docker development environment (need to shut down another containers if ran)
-### `make start_test`
-start docker testing environment (need to shut down another containers if ran)
 ### `make build`
 build docker container
 ### `make install_deps`
@@ -40,7 +40,7 @@ apply database fixtures
 clean all inactive containers and cache
 ### `make test`
 start functional tests
-### `docker-compose down`
+### `make down`
 shut down containers
 
 
