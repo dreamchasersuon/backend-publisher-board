@@ -29,6 +29,7 @@ class UserRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->orderBy('u.register_date', 'ASC')
             ->getQuery()
             ->getResult();
     }
