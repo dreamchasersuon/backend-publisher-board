@@ -8,8 +8,11 @@ help:
 	@echo '  prune    				cleanup inactive containers and cache.'
 	@echo '  test    				start functional tests.'
 
-start_dev:
+start:
 	docker-compose up
+
+down:
+	docker-compose down
 
 build:
 	docker-compose build
