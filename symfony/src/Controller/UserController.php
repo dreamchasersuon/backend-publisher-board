@@ -70,15 +70,14 @@ class UserController extends AbstractFOSRestController
         UserRepository $userRepository
     ): Response
     {
-        $user = new User();
-        $form = $this->createForm(UserCreateType::class, $user);
+        $form = $this->createForm(UserCreateType::class, new User());
         $userPersonalInfo = json_decode($request->getContent(),true);
 
         $form->submit($userPersonalInfo);
         if ($form->isValid()) {
-            $validatedUser = $form->getData();
+            $user = $form->getData();
 
-            $user_id = $validatedUser->getUserId();
+            $user_id = $user->getUserId();
             $isExist = $userRepository->find($user_id);
             if ($isExist) {
                 return $this->handleException(
